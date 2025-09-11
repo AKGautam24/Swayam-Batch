@@ -1,54 +1,47 @@
+find the maximum number in the sliding window of size t.
+
 import java.util.*;
-public class BalanceBracket {
-    public static void main(String args []) {
-        Scanner sc =new Scanner(System.in);
-        String str=sc.nextLine();
-
-        Stack<Character>st=new Stack<>();
-        for(int i=0;i<str.length();i++) {
-            char ch = str.charAt(i);
-            if (ch == '(' || ch == '{' || ch == '[') {
-                st.push(ch);
-            } else if (ch == ')') {
-                boolean val = handleclosing(st, '(');
-                if (val == false) {
-                    System.out.println(val);
-                    return;
-                }
-            } else if (ch == '}') {
-                boolean val = handleclosing(st, '{');
-                if (val == false) {
-                    System.out.println(val);
-                    return;
-                }
-            } else if (ch == ']') {
-                boolean val = handleclosing(st, '[');
-                if (val == false) {
-                    System.out.println(val);
-                    return;
-                }
-            } else {
-
-            }
+public class SlidingWindowMax {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int arr[] = new int[n];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = sc.nextInt();
         }
-
-            if(st.size()==0) {
-                System.out.println(true);
-            } else {
-                System.out.println(false);
-            }
+        int t = sc.nextInt();
 
 
+    Stack<Integer> st = new Stack<>();
+    int[] nge = new int[arr.length];
 
-    }
-    public static boolean handleclosing(Stack<Character> st , char corres ) {
-        if(st.size()==0) {
-            return false ;
-        } else if(st.peek() !=corres) {
-            return false ;
-        } else {
+    st.push(arr.length-1);
+    nge[arr.length-1]=arr.length;
+    for(int i=arr.length-2;i>=0;i--) {
+        while(st.size()>0 && arr[i]>arr[st.peek()]) {
             st.pop();
-            return true;
         }
+        if(st.size()==0) {
+            nge[i]=arr.length;
+        } else {
+            nge[i]=st.peek();
+        }
+        st.push(i);
+
     }
+    int j=0;
+    for(int i=0;i<=arr.length-t;i++) {
+        if(j<i) {
+           j=i;
+        }
+        while(nge[j]<i+t) {
+            j=nge[j];
+        }
+        System.out.println(arr[j]);
+    }
+
+
+
 }
+}
+
